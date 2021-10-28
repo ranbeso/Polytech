@@ -151,7 +151,7 @@ int main() {
    const string path = "/Users/novgel59/Desktop/C++/in.txt";
 
 
-   vector<string> points = ReadAll(path);
+   vector<string> points = ReadAll("in.txt");
 
    vector<double> Xm = ChangeToDoubleX(points);
    vector<double> Ym = ChangeToDoubleY(points);
