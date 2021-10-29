@@ -1,8 +1,6 @@
-#pragma once
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <exception>
 using namespace std;
 
 struct Point{
