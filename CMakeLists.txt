@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 
-add_executable(Polytech homework1/main1.cpp)
-
+add_subdirectory(homework1)
+add_subdirectory(homework2)
