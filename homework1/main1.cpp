@@ -98,7 +98,7 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
         }
     }
 
-}
+
 vector<double> Distance(double x, double y, vector<double>& X, vector<double>& Y, string type){
     vector<double>  xn;
     vector<double> yn;
