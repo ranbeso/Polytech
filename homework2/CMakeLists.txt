@@ -4,4 +4,4 @@ project(Polytech)
 set(CMAKE_CXX_STANDARD 14)
 
 
-add_executable(Polytech homework2/main2.cpp)
+add_executable(homework2 main2.cpp)
