@@ -63,19 +63,18 @@ vector<double> ChangeToDoubleY(vector<string> &vec){
     }
     return Y;
 }
-vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType, string side){
+vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType, string side) {
     vector<double> Xr;
     vector<double> Yr;
     vector<double> Xl;
     vector<double> Yl;
-    double k = y[0]/x[0];
-    for(int i = 1; i < x.size(); i++){
-        double check = y[i]-k*x[i];
-        if ((check == 0) | (check > 0)){
+    double k = y[0] / x[0];
+    for (int i = 1; i < x.size(); i++) {
+        double check = y[i] - k * x[i];
+        if ((check == 0) | (check > 0)) {
             Xl.push_back(x[i]);
             Yl.push_back(y[i]);
-        }
-        else{
+        } else {
             Xr.push_back(x[i]);
             Yr.push_back(y[i]);
         }
@@ -84,20 +83,17 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
     if (coordType == "X") {
         if (side == "Right") {
             return Xr;
-        }
-        else if (side == "Left") {
+        } else if (side == "Left") {
             return Xl;
         }
-    }
-    else {
+    } else {
         if (side == "Right") {
             return Yr;
-        }
-        else if (side == "Left") {
+        } else if (side == "Left") {
             return Yl;
         }
     }
-
+}
 
 vector<double> Distance(double x, double y, vector<double>& X, vector<double>& Y, string type){
     vector<double>  xn;
