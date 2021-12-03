@@ -17,7 +17,7 @@ vector <string> ReadAll(const string& path) {
             file >> str;
             points.push_back(str);
         }
-        points.push_back(str);
+        points.push_back(str);   //�������� �������� ��������� ������, ��-�� ����� �� ��������� �������� ������� ChangeToDouble(X/Y)
         points.pop_back();
     }
     file.close();
@@ -121,7 +121,7 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
     }
     else
     {
-        cout << "ошибка" <<endl;
+        return Yl;
     }
 }
 
@@ -129,8 +129,8 @@ vector<double> Distance(double x, double y, vector<double>& X, vector<double>& Y
     vector<double>  xn;
     vector<double> yn;
     vector<double> distance;
-    //double ynew;
-    //double xnew;
+    double ynew;
+    double xnew;
     /*for (int i = 0; i < X.size(); i++) {
         if (type == "R") {
             xnew = X[i] - x;
@@ -146,12 +146,9 @@ vector<double> Distance(double x, double y, vector<double>& X, vector<double>& Y
 */
     for (int i = 0; i < X.size(); i++) {
         double d = fabs(y/x*X[i]-Y[i])/(sqrt(y*y/x/x+1));//sqrt(xn[i] * xn[i] + yn[i] * yn[i]);
-
         distance.push_back(d);
     }
     return distance;
-
-}
 
 }
 void CoordOfMaxDist(double& m, vector<double>& dist, vector<double>& X, vector<double>& Y, string type) {
@@ -197,6 +194,13 @@ int main() {
     vector<double> Ldistances = Distance(x0, y0, Xl, Yl, "L");
     double maxR = *max_element(Rdistances.begin(), Rdistances.end());
     double maxL = *max_element(Ldistances.begin(), Ldistances.end());
+
+    /* PrintVector(Xr);
+     PrintVector(Yr);
+     PrintVector(Xl);
+     PrintVector(Yl);
+     PrintVector(Rdistances);
+     PrintVector(Ldistances);*/
 
     CoordOfMaxDist(maxL, Ldistances, Xl, Yl, "L");
     CoordOfMaxDist(maxR, Rdistances, Xr, Yr, "R");
