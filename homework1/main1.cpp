@@ -17,7 +17,7 @@ vector <string> ReadAll(const string& path) {
             file >> str;
             points.push_back(str);
         }
-        points.push_back(str);   //�������� �������� ��������� ������, ��-�� ����� �� ��������� �������� ������� ChangeToDouble(X/Y)
+        points.push_back(str);   //...
         points.pop_back();
     }
     file.close();
