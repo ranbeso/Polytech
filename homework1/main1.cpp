@@ -72,14 +72,31 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
     double k = y[0] / x[0];
     for (int i = 1; i < x.size(); i++) {
         double check = y[i] - k * x[i];
-        if ((check == 0) || (check > 0)) {
-            Xl.push_back(x[i]);
-            Yl.push_back(y[i]);
+        double check2 = k * x[i] - y[i] ;
+        if (x[0]>0){
+            if (( check2 > 0)||(check2 == 0)) {
+                Xr.push_back(x[i]);
+                Yr.push_back(y[i]);
+            }
+            else {
+                Xl.push_back(x[i]);
+                Yl.push_back(y[i]);
+
+            }
+
         }
-        else {
-            Xr.push_back(x[i]);
-            Yr.push_back(y[i]);
+        else{
+            if (( check > 0)) {
+                Xr.push_back(x[i]);
+                Yr.push_back(y[i]);
+            }
+            else {
+                Xl.push_back(x[i]);
+                Yl.push_back(y[i]);
+
+            }
         }
+
 
     }
     if (coordType == "X") {
@@ -104,7 +121,7 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
     }
     else
     {
-        return Yl ;
+        cout << "ошибка" <<endl;
     }
 }
 
@@ -112,9 +129,9 @@ vector<double> Distance(double x, double y, vector<double>& X, vector<double>& Y
     vector<double>  xn;
     vector<double> yn;
     vector<double> distance;
-    double ynew;
-    double xnew;
-    for (int i = 0; i < X.size(); i++) {
+    //double ynew;
+    //double xnew;
+    /*for (int i = 0; i < X.size(); i++) {
         if (type == "R") {
             xnew = X[i] - x;
             ynew = Y[i] - y;
@@ -126,11 +143,15 @@ vector<double> Distance(double x, double y, vector<double>& X, vector<double>& Y
         xn.push_back(xnew);
         yn.push_back(ynew);
     }
+*/
     for (int i = 0; i < X.size(); i++) {
-        double d = sqrt(xn[i] * xn[i] + yn[i] * yn[i]);
+        double d = fabs(y/x*X[i]-Y[i])/(sqrt(y*y/x/x+1));//sqrt(xn[i] * xn[i] + yn[i] * yn[i]);
+
         distance.push_back(d);
     }
     return distance;
+
+}
 
 }
 void CoordOfMaxDist(double& m, vector<double>& dist, vector<double>& X, vector<double>& Y, string type) {
