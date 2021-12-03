@@ -17,7 +17,7 @@ vector <string> ReadAll(const string& path) {
             file >> str;
             points.push_back(str);
         }
-        points.push_back(str);   //...
+        points.push_back(str);   //�������� �������� ��������� ������, ��-�� ����� �� ��������� �������� ������� ChangeToDouble(X/Y)
         points.pop_back();
     }
     file.close();
@@ -72,7 +72,7 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
     double k = y[0] / x[0];
     for (int i = 1; i < x.size(); i++) {
         double check = y[i] - k * x[i];
-        if ((check == 0) | (check > 0)) {
+        if ((check == 0) || (check > 0)) {
             Xl.push_back(x[i]);
             Yl.push_back(y[i]);
         }
@@ -89,14 +89,22 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
         else if (side == "Left") {
             return Xl;
         }
+        else { return Xl; }
     }
-    else {
+    else if (coordType == "Y") {
         if (side == "Right") {
             return Yr;
         }
         else if (side == "Left") {
             return Yl;
         }
+        else {
+            return Yl;
+        }
+    }
+    else
+    {
+        return Yl ;
     }
 }
 
@@ -169,9 +177,9 @@ int main() {
     double maxR = *max_element(Rdistances.begin(), Rdistances.end());
     double maxL = *max_element(Ldistances.begin(), Ldistances.end());
 
-    CoordOfMaxDist(maxL, Ldistances, Xl, Yl, "L");
-    CoordOfMaxDist(maxR, Rdistances, Xr, Yr, "R");
 
+    CoordOfMaxDist(maxR, Rdistances, Xr, Yr, "R");
+    CoordOfMaxDist(maxL, Ldistances, Xl, Yl, "L");
 
 
 
