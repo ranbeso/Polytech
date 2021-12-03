@@ -17,7 +17,7 @@ vector <string> ReadAll(const string& path) {
             file >> str;
             points.push_back(str);
         }
-        points.push_back(str); //...
+        points.push_back(str);   //�������� �������� ��������� ������, ��-�� ����� �� ��������� �������� ������� ChangeToDouble(X/Y)
         points.pop_back();
     }
     file.close();
@@ -177,9 +177,9 @@ int main() {
     double maxR = *max_element(Rdistances.begin(), Rdistances.end());
     double maxL = *max_element(Ldistances.begin(), Ldistances.end());
 
-
-    CoordOfMaxDist(maxR, Rdistances, Xr, Yr, "R");
     CoordOfMaxDist(maxL, Ldistances, Xl, Yl, "L");
+    CoordOfMaxDist(maxR, Rdistances, Xr, Yr, "R");
+
 
 
 
