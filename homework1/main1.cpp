@@ -176,7 +176,7 @@ void CoordOfMaxDist(double& m, vector<double>& dist, vector<double>& X, vector<d
 int main() {
     const string path = "in.txt";
 
-//
+
     vector<string> points = ReadAll("in.txt");
 
 
