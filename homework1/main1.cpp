@@ -17,7 +17,7 @@ vector <string> ReadAll(const string& path) {
             file >> str;
             points.push_back(str);
         }
-        points.push_back(str);   //�������� �������� ��������� ������, ��-�� ����� �� ��������� �������� ������� ChangeToDouble(X/Y)
+        points.push_back(str);
         points.pop_back();
     }
     file.close();
@@ -72,9 +72,9 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
     double k = y[0] / x[0];
     for (int i = 1; i < x.size(); i++) {
         double check = y[i] - k * x[i];
-        double check2 = k * x[i] - y[i] ;
-        if (x[0]>0){
-            if (( check2 > 0)||(check2 == 0)) {
+        double check2 = k * x[i] - y[i];
+        if (x[0] > 0) {
+            if ((check2 > 0) || (check2 == 0)) {
                 Xr.push_back(x[i]);
                 Yr.push_back(y[i]);
             }
@@ -85,8 +85,8 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
             }
 
         }
-        else{
-            if (( check > 0)) {
+        else {
+            if ((check > 0)) {
                 Xr.push_back(x[i]);
                 Yr.push_back(y[i]);
             }
@@ -103,21 +103,19 @@ vector<double> CheckSide(vector<double>& x, vector<double>& y, string coordType,
         if (side == "Right") {
             return Xr;
         }
-        else if (side == "Left") {
+        else  {
             return Xl;
         }
-        else { return Xl; }
+
     }
     else if (coordType == "Y") {
         if (side == "Right") {
             return Yr;
         }
-        else if (side == "Left") {
+        else  {
             return Yl;
         }
-        else {
-            return Yl;
-        }
+
     }
     else
     {
@@ -143,9 +141,9 @@ vector<double> Distance(double x, double y, vector<double>& X, vector<double>& Y
         xn.push_back(xnew);
         yn.push_back(ynew);
     }
-*/
+  */
     for (int i = 0; i < X.size(); i++) {
-        double d = fabs(y/x*X[i]-Y[i])/(sqrt(y*y/x/x+1));//sqrt(xn[i] * xn[i] + yn[i] * yn[i]);
+        double d = fabs(y / x * X[i] - Y[i]) / (sqrt(y * y / x / x + 1));//sqrt(xn[i] * xn[i] + yn[i] * yn[i]);
         distance.push_back(d);
     }
     return distance;
@@ -180,6 +178,7 @@ int main() {
 
     vector<string> points = ReadAll("in.txt");
 
+
     vector<double> Xm = ChangeToDoubleX(points);
     vector<double> Ym = ChangeToDoubleY(points);
     double x0 = Xm[0];
@@ -192,9 +191,17 @@ int main() {
     vector<double> Yl = CheckSide(Xm, Ym, "Y", "Left");
     vector<double> Rdistances = Distance(x0, y0, Xr, Yr, "R");
     vector<double> Ldistances = Distance(x0, y0, Xl, Yl, "L");
-    double maxR = *max_element(Rdistances.begin(), Rdistances.end());
-    double maxL = *max_element(Ldistances.begin(), Ldistances.end());
+    if (Xl.size() == 0)  cout << "Leftmost:" << ' ' << 0 << ' ' << 0 << endl;
+    else {
+        double maxL = *max_element(Ldistances.begin(), Ldistances.end());
+        CoordOfMaxDist(maxL, Ldistances, Xl, Yl, "L");
+    }
 
+    if(Xr.size() == 0) cout << "Rightmost:" << ' ' << 0 << ' ' << 0 << endl;
+    else {
+        double maxR = *max_element(Rdistances.begin(), Rdistances.end());
+        CoordOfMaxDist(maxR, Rdistances, Xr, Yr, "R");
+    }
     /* PrintVector(Xr);
      PrintVector(Yr);
      PrintVector(Xl);
@@ -202,8 +209,6 @@ int main() {
      PrintVector(Rdistances);
      PrintVector(Ldistances);*/
 
-    CoordOfMaxDist(maxL, Ldistances, Xl, Yl, "L");
-    CoordOfMaxDist(maxR, Rdistances, Xr, Yr, "R");
 
 
 
