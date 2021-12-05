@@ -1,9 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <climits>
 using namespace std;
 
-struct Point{
+double ar[2];
+
+struct Point {
     int x;
     int y;
 };
@@ -37,17 +40,18 @@ double flyPath(double x, double x0, double h, double vx, double vy)
     const double g = 9.81;
     double v02 = vx * vx + vy * vy;
     double tan = vy / vx;
-    return h + (x - x0) * tan - (g * (x-x0) * (x-x0)) / (2 * v02) * (tan * tan + 1);
+    return h + (x - x0) * tan - (g * (x - x0) * (x - x0)) / (2 * v02) * (tan * tan + 1);
 }
 
 double* roots(double a, double b, double c, double move)
 {
 
-    double dis = sqrt(b*b - 4*a*c);
-    double x1 = (-b - dis) / (2*a);
-    double x2 = (-b + dis) / (2*a);
+    double dis = sqrt(b * b - 4 * a * c);
+    double x1 = (-b - dis) / (2 * a);
+    double x2 = (-b + dis) / (2 * a);
 
-    double ar[2]{ x1 + move, x2 + move };
+    ar[0] = x1 + move;
+    ar[1]= x2 + move;
     return ar;
 }
 
@@ -173,9 +177,8 @@ int main(int argc, char** argv)
     {
         cerr << "NOT ENOUGH ARGUMENTS" << endl;
         cin.clear();
-        cin.ignore(INT_MAX, '\n');
+        cin.ignore(INT_MAX, '\n'); //////////////
         cin.get();
         return -1;
     }
 }
-
