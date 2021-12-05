@@ -12,13 +12,14 @@ vector <string> ReadAll(const string& path) {
     vector<string> points;
     ifstream file(path);
     if (file.is_open()) {
-        string str;
+
         while (!file.eof()) {
+            string str;
             file >> str;
-            points.push_back(str);
+            if(str != "") {
+                points.push_back(str);
+            }
         }
-        points.push_back(str);
-        points.pop_back();
     }
     file.close();
     return points;
