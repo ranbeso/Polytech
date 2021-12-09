@@ -2,183 +2,121 @@
 #include <fstream>
 #include <cmath>
 #include <climits>
+#include <vector>
 using namespace std;
 
-double ar[2];
+const double G = 9.81;
 
-struct Point {
-    int x;
-    int y;
-};
+vector<double> point_X;
+vector<double> point_Y;
+double height;
+double speed_x, speed_y;
+int check1 = 1, check2 = 0;
 
-struct Answer
+void ReadFile(const char* path)
 {
-    Point left;
-    Point right;
-};
-
-struct Wall
-{
-    double x;
-    double h;
-};
-
-struct System
-{
-    double startHeight;
-    Wall* walls;
-    double vx;
-    double vy;
-};
-
-System readFile2(char*, int&);
-double flyPath(double x, double x0, double h, double vx, double vy);
-double* roots(double a, double b, double c, double move);
-
-double flyPath(double x, double x0, double h, double vx, double vy)
-{
-    const double g = 9.81;
-    double v02 = vx * vx + vy * vy;
-    double tan = vy / vx;
-    return h + (x - x0) * tan - (g * (x - x0) * (x - x0)) / (2 * v02) * (tan * tan + 1);
-}
-
-double* roots(double a, double b, double c, double move)
-{
-
-    double dis = sqrt(b * b - 4 * a * c);
-    double x1 = (-b - dis) / (2 * a);
-    double x2 = (-b + dis) / (2 * a);
-
-    ar[0] = x1 + move;
-    ar[1] = x2 + move;
-    return ar;
-}
-
-System readFile2(char* path, int& n)
-{
-    System system;
-    const int MAX = 10;
-    char buffer[MAX];
+    double x, y;
     std::ifstream in(path);
     if (in.is_open())
     {
-        while (!in.eof())
+        in >> height >> speed_x >> speed_y;
+        while (!in.eof() && speed_x >= x * (speed_y + sqrt(speed_y * speed_y + 2 * G * height)) / G)
         {
-            in.getline(buffer, MAX);
-            n++;
-        }
-        in.seekg(0);
-        in >> system.startHeight;
-        in >> system.vx >> system.vy;
+            in >> x >> y;
 
-        system.walls = new Wall[n - 1];
-        system.walls[0] = Wall{ 0, system.startHeight };
-        n = 1;
-        while (!in.eof())
-        {
-            Wall inWall;
-            in >> inWall.x >> inWall.h;
-            system.walls[n] = inWall;
-            n++;
+            point_X.push_back(x);
+            point_Y.push_back(y);
         }
-        return system;
-    }
-    else {
-        throw std::runtime_error("No file!");
     }
 }
 
+void FlyPoint(char ch) {
+    if (ch == 'R')
+        height = -G * (point_X[check2 + 1] - point_X[check1 - 1]) * (point_X[check2 + 1] - point_X[check1 - 1]) / 2 / speed_x / speed_x + (speed_y - G * point_X[check1 + 1] / speed_x) * (point_X[check2 + 1] - point_X[check1 - 1]) / speed_x + height;
+    else
+        height = -G * (point_X[check1] - point_X[check2 + 1]) * (point_X[check1] - point_X[check2 + 1]) / 2 / speed_x / speed_x - (speed_y - G * point_X[check2 + 1] / speed_x) * (point_X[check1] - point_X[check2 + 1]) / speed_x + height;
 
+}
+
+void Check(char ch) {
+    if (ch == 'R') {
+        for (int i = check1; i <= point_X.size(); ++i) {
+            double length = -G * (point_X[i] - point_X[check1 - 1]) * (point_X[i] - point_X[check1 - 1]) / 2 / speed_x / speed_x + (speed_y - G * point_X[check1 - 1] / speed_x) * (point_X[i] - point_X[check1 - 1]) / speed_x + height;
+            if (length < point_Y[i]) {
+                check2 = i - 1;
+                return;
+            }
+            check2 = i;
+        }
+    }
+    else
+    {
+        int n;
+        for (int i = 0; i <= check1; ++i) {
+            double length = -G * (point_X[check1 - i] - point_X[check1 + 1]) * (point_X[check1 - i] - point_X[check1 + 1]) / 2 / speed_x / speed_x - (speed_y - G * point_X[check1 + 1] / speed_x) * (point_X[check1 - i] - point_X[check1 + 1]) / speed_x + height;
+
+            if (length < point_Y[check1 - i]) {
+                check1 -= i;
+                return;
+            }
+            else if (check1 - i == 0) {
+                check1 = 0;
+                return;
+            }
+            check1 = check1 - i;
+        }
+    }
+}
+
+void Start() {
+    while (height >= 0) {
+        if (check1 == check2) {
+            cout << check1 << endl;
+            return;
+        }
+
+        Check('R');
+        if (check2 == point_X.size()) {
+            cout << check2 << endl;
+            return;
+        }
+
+        FlyPoint('R');
+        if (height < 0) {
+            cout << check2 << endl;
+            return;
+        }
+
+        Check('L');
+        if (check1 == 0) {
+            cout << check1 << endl;
+            return;
+        }
+
+        FlyPoint('L');
+        if (height < 0) {
+            cout << check1 << endl;
+            return;
+        }
+
+
+    }
+}
 
 
 
 int main(int argc, char** argv)
 {
     if (argc == 2) {
-        int n = 0;
-        System system = readFile2(argv[1], n);
-        Wall* walls = system.walls;
-        double vx, vy, h;
-        vx = system.vx;
-        vy = system.vy;
-        h = system.startHeight;
-        const double g = 9.81;
-        double pointOfLand;
 
-        bool flyRight = true;
-        bool isLanded = false;
-        bool collided = false;
-        int wallHit = 0;
-        while (!isLanded)
-        {
-            if (flyRight)
-            {
-                for (int i = wallHit + 1; i < n; i++)
-                {
-                    double temp = flyPath(walls[i].x, walls[wallHit].x, h, vx, vy);
-                    if (temp < walls[i].h && temp > 0)
-                    {
-                        collided = true;
-                        flyRight = !flyRight;
-                        wallHit = i;
-                        h = temp;
-                        vy = vy - g * walls[i].x / vx;
-                        vx = -vx;
-                        break;
-                    }
-                }
-                if (!collided)
-                {
-                    isLanded = true;
-                    double v0 = vx * vx + vy * vy;
-                    double tan = vy / vx;
-                    pointOfLand = roots(-g / (2 * v0) * (tan * tan + 1), tan, h, walls[wallHit].x)[0];
-                }
-            }
-            else {
-                collided = false;
-                for (int i = wallHit - 1; i >= 1; i--)
-                {
-                    double temp = flyPath(walls[i].x, walls[wallHit].x, h, vx, vy);
-                    if (temp < walls[i].h && temp > 0)
-                    {
-                        collided = true;
-                        flyRight = !flyRight;
-                        wallHit = i;
-                        h = temp;
-                        vy = vy - g * walls[i].x / vx;
-                        vx = -vx;
-                        break;
-                    }
-                }
-                if (!collided)
-                {
-                    isLanded = true;
-                    double v0 = vx * vx + vy * vy;
-                    double tan = vy / vx;
-                    pointOfLand = roots(-g / (2 * v0) * (tan * tan + 1), tan, h, walls[wallHit].x)[1];
-                }
-            }
+        ReadFile(argv[1]);
+
+        if (speed_x == 0 || point_X.size() == 0) {
+            cout << 0;
+            return 0;
         }
-
-        delete system.walls;
-
-        for (int i = 0; i < n - 1; i++)
-            if (pointOfLand > walls[i].x && pointOfLand < walls[i + 1].x)
-            {
-                cout  << i << endl;
-                return 0;
-            }
-        cout  << n-1 << endl;
+        Start();
         return 0;
     }
-    else
-    {
-        cerr << "NOT ENOUGH ARGUMENTS" << endl;
-        cin.clear();
-        cin.ignore(INT_MAX, '\n'); //////////////
-        cin.get();
-        return -1;
-    }
+    else return 0;
 }
