@@ -51,7 +51,7 @@ double* roots(double a, double b, double c, double move)
     double x2 = (-b + dis) / (2 * a);
 
     ar[0] = x1 + move;
-    ar[1]= x2 + move;
+    ar[1] = x2 + move;
     return ar;
 }
 
@@ -167,10 +167,10 @@ int main(int argc, char** argv)
         for (int i = 0; i < n - 1; i++)
             if (pointOfLand > walls[i].x && pointOfLand < walls[i + 1].x)
             {
-                cout << "Area of landing: " << i << endl;
+                cout  << i << endl;
                 return 0;
             }
-        cout << "Area of landing: " << n << endl;
+        cout  << n-1 << endl;
         return 0;
     }
     else
