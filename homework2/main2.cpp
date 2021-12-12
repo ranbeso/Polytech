@@ -27,7 +27,7 @@ void ReadFile(char* path)
 
 
             in >> x >> y;
-            if (x == int("") || y == int("")) return;
+            if (x == atoi("") || y == atoi("")) return;
 
             point_X.push_back(x);
             point_Y.push_back(y);
