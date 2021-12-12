@@ -24,7 +24,10 @@ void ReadFile(char* path)
         point_Y.push_back(height);
         while (!in.eof() && check1 <= speed_x * (speed_y + sqrt(speed_y * speed_y + 2 * G * height)) / G)
         {
+
+
             in >> x >> y;
+            if (x == int("") || y == int("")) return;
 
             point_X.push_back(x);
             point_Y.push_back(y);
