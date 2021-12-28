@@ -22,8 +22,7 @@ void ReadAll(const string& path) {
     double XR_MAX = 0, XL_MAX = 0, YR_MAX = 0, YL_MAX = 0;
     double DISTL = 0, DISTR = 0;
     double d = 0;
-    double x = 0, y = 0, xV, yV, xr0 = 0, xl0 = 0, yr0 = 0, yl0 = 0;
-    bool ch = false;
+    double x = 0, y = 0, xV, yV;
     ifstream file(path);
     if (file.is_open()) {
         string str;
@@ -59,8 +58,6 @@ void ReadAll(const string& path) {
                 }
                 else {
                     d = fabs((yV * x - xV * y) / sqrt(xV * xV + yV * yV));
-                    xr0 = x;
-                    yr0 = y;
                     if (d >= DISTR)
                     {
                         DISTR = d;
